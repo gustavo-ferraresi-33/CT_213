@@ -1,5 +1,11 @@
 import pygame
+
 from math import sin, cos
+
+from pygame.time import Clock
+
+from roomba import Roomba
+
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PIX2M, M2PIX
 
 
@@ -7,7 +13,7 @@ class Simulation(object):
     """
     Represents the simulation.
     """
-    def __init__(self, roomba):
+    def __init__(self, roomba: Roomba, clock: Clock):
         """
         Creates the simulation.
 
@@ -16,6 +22,7 @@ class Simulation(object):
         """
         self.point_list = []
         self.roomba = roomba
+        self.clock = clock
 
     def check_collision(self):
         """
@@ -48,7 +55,7 @@ class Simulation(object):
             bumper_state = True
         return bumper_state
 
-    def update(self):
+    def update(self, clock: Clock):
         """
         Updates the simulation.
         """
@@ -60,7 +67,7 @@ class Simulation(object):
         bumper_state = self.check_collision()
         self.roomba.set_bumper_state(bumper_state)
         # Updating the robot's behavior and movement
-        self.roomba.update()
+        self.roomba.update(clock)
 
     def draw(self, window):
         """
