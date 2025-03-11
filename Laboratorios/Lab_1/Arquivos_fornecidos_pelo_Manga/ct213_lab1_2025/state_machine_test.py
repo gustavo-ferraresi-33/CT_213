@@ -1,10 +1,8 @@
-
 from utils import Pose
 from constants import FREQUENCY
-
+from roomba import Roomba
 from simulation import *
-# BUG: import the entire file instead?
-from state_machine import *
+from state_machine import FiniteStateMachine, MoveForwardState
 
 pygame.init()
 

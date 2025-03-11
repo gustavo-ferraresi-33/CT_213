@@ -1,8 +1,5 @@
 from math import sin, cos, fabs
-
-from state_machine import FiniteStateMachine
 from constants import SAMPLE_TIME
-from pygame.time import Clock
 
 
 def clamp(value, min, max):

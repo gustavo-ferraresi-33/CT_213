@@ -1,11 +1,5 @@
 import pygame
-
 from math import sin, cos
-
-from pygame.time import Clock
-
-from roomba import Roomba
-
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PIX2M, M2PIX
 
 
