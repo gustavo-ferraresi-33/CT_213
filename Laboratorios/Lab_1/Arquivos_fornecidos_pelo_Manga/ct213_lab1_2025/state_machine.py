@@ -40,7 +40,7 @@ class State(object):
         Creates a state.
 
         :param state_name: the name of the state.
-        :type state_name: StateName
+        :type state_name
         """
         # Initialize sampling cycles counter "n"
         self.n = n

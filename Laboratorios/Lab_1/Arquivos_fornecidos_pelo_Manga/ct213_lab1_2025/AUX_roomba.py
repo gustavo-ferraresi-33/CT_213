@@ -4,7 +4,7 @@ class Roomba(object):
     """
     Represents a roomba cleaning robot.
     """
-    def __init__(self, pose, max_linear_speed, max_angular_speed, radius, behavior: FiniteStateMachine):
+    def __init__(self, pose, max_linear_speed, max_angular_speed, radius, behavior):
         """
         Creates a roomba cleaning robot.
 
