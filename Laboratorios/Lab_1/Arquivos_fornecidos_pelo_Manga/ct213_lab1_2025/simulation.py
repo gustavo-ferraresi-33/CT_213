@@ -7,7 +7,7 @@ class Simulation(object):
     """
     Represents the simulation.
     """
-    def __init__(self, roomba: Roomba, clock: Clock):
+    def __init__(self, roomba):
         """
         Creates the simulation.
 
@@ -16,7 +16,6 @@ class Simulation(object):
         """
         self.point_list = []
         self.roomba = roomba
-        self.clock = clock
 
     def check_collision(self):
         """
@@ -49,7 +48,7 @@ class Simulation(object):
             bumper_state = True
         return bumper_state
 
-    def update(self, clock: Clock):
+    def update(self):
         """
         Updates the simulation.
         """
@@ -61,7 +60,7 @@ class Simulation(object):
         bumper_state = self.check_collision()
         self.roomba.set_bumper_state(bumper_state)
         # Updating the robot's behavior and movement
-        self.roomba.update(clock)
+        self.roomba.update()
 
     def draw(self, window):
         """

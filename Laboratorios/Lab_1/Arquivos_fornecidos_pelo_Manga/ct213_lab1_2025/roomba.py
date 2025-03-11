@@ -1,5 +1,6 @@
 from math import sin, cos, fabs
 from constants import SAMPLE_TIME
+from state_machine import FiniteStateMachine
 
 
 def clamp(value, min, max):
@@ -22,7 +23,7 @@ class Roomba(object):
     """
     Represents a roomba cleaning robot.
     """
-    def __init__(self, pose, max_linear_speed, max_angular_speed, radius, behavior: FiniteStateMachine):
+    def __init__(self, pose, max_linear_speed, max_angular_speed, radius, behavior):
         """
         Creates a roomba cleaning robot.
 
@@ -93,10 +94,10 @@ class Roomba(object):
             self.pose.position.y += (2.0 * v / w) * sin(self.pose.rotation + w * dt / 2.0) * sin(w * dt / 2.0)
         self.pose.rotation += w * dt
 
-    def update(self, clock: Clock):
+    def update(self):
         """
         Updates the robot, including its behavior.
         """
-        self.behavior.update(self, clock)
+        self.behavior.update(self)
         self.move()
 

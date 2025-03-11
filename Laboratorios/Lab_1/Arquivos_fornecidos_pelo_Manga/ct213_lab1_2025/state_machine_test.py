@@ -2,7 +2,7 @@ from utils import Pose
 from constants import FREQUENCY
 from roomba import Roomba
 from simulation import *
-from state_machine import FiniteStateMachine, MoveForwardState
+from state_machine import FiniteStateMachine, StateName
 
 pygame.init()
 
@@ -17,7 +17,7 @@ behavior = FiniteStateMachine(StateName.MOVE_FORWARD)
 # behavior = RoombaBehaviorTree()
 pose = Pose(PIX2M * SCREEN_WIDTH / 2.0, PIX2M * SCREEN_HEIGHT / 2.0, 0.0)
 roomba = Roomba(pose, 1.0, 2.0, 0.34 / 2.0, behavior)
-simulation = Simulation(roomba, clock)
+simulation = Simulation(roomba)
 
 run = True
 
@@ -28,7 +28,7 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-    simulation.update(clock)
+    simulation.update()
     draw(simulation, window)
 
 pygame.quit()
