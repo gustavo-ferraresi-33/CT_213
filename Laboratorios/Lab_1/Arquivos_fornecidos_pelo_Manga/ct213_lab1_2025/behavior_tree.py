@@ -197,7 +197,7 @@ class RoombaBehaviorTree(BehaviorTree):
     def __init__(self):
         # Todo: construct the tree here
         # Creating root node (Selector)
-        selector_root = SelectorNode(node_name = "selector", parent = None, n = 0)
+        selector_root = SelectorNode(node_name = "selector_root", parent = None, n = 0)
 
         # Creating left subtree's root node (Sequence)
         sequence_left = SequenceNode(node_name = "sequence_left", parent = selector_root, n = 0)
@@ -232,14 +232,44 @@ class MoveForwardNode(LeafNode):
         # Set sampling cycles counter "n" to "0"
         self.n = 0
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_left",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
 
     def enter(self, agent):
         # Todo: add enter logic
         # Set node status to VISITING
         self.status = NodeStatus.VISITING
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_left",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
     def execute(self, agent):
         # Todo: add execution logic
+
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_left",
+              5 * " ",
+              "Caller method:", "execute",
+        )
 
         # If leaf node is not being visited, raise error
         if self.status != NodeStatus.VISITING:
@@ -267,7 +297,6 @@ class MoveForwardNode(LeafNode):
             raise ValueError("Error! Sampling cycles counter \"n\" is invalid.")
 
 
-
 class MoveInSpiralNode(LeafNode):
     def __init__(self, status = NodeStatus.VISITING, node_name = "move_in_spiral", parent = None, n = 0):
         super().__init__(status = status, node_name = node_name, parent = parent, n = n)
@@ -275,14 +304,44 @@ class MoveInSpiralNode(LeafNode):
         # Set sampling cycles counter "n" to "0"
         self.n = 0
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_left",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
     def enter(self, agent):
         # Todo: add enter logic
         # Set node status to VISITING
         self.status = NodeStatus.VISITING
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_left",
+              5 * " ",
+              "Caller method:", "execute",
+       )
+
 
     def execute(self, agent):
         # Todo: add execution logic
+
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_left",
+              5 * " ",
+              "Caller method:", "execute",
+        )
 
         # If leaf node is not being visited, raise error
         if self.status != NodeStatus.VISITING:
@@ -319,14 +378,44 @@ class GoBackNode(LeafNode):
         # Set sampling cycles counter "n" to "0"
         self.n = 0
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_right",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
     def enter(self, agent):
         # Todo: add enter logic
         # Set node status to VISITING
         self.status = NodeStatus.VISITING
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_right",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
 
     def execute(self, agent):
         # Todo: add execution logic
+
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_right",
+              5 * " ",
+              "Caller method:", "execute",
+        )
 
         # If leaf node is not being visited, raise error
         if self.status != NodeStatus.VISITING:
@@ -363,13 +452,43 @@ class RotateNode(LeafNode):
         # Set sampling cycles counter "n" to "0"
         self.n = 0
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_right",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
     def enter(self, agent):
         # Todo: add enter logic
         # Set node status to VISITING
         self.status = NodeStatus.VISITING
 
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_right",
+              5 * " ",
+              "Caller method:", "execute",
+        )
+
     def execute(self, agent):
         # Todo: add execution logic
+
+        # DEBUGGING: printing method being executed
+        print("Current class:", type(self).__name__,
+              5 * " ",
+              "Current method:", inspect.currentframe().f_code.co_name,
+              5 * " ",
+              "Caller class:", "sequence_right",
+              5 * " ",
+              "Caller method:", "execute",
+        )
 
         # If leaf node is not being visited, raise error
         if self.status != NodeStatus.VISITING:
