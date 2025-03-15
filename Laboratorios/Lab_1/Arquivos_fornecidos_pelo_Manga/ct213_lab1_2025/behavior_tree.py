@@ -327,23 +327,25 @@ class MoveForwardNode(LeafNode):
         if self.status != NodeStatus.VISITING:
             raise ValueError("Error! Node status is not VISITING.")
 
-        # Increment sampling cycles counter "n"
-        self.n += 1
-
         # Change velocity to move forwards
         agent.set_velocity(FORWARD_SPEED, 0)
         # DUVIDA: call "check_transition()" ?
 
+        # Increment sampling cycles counter "n"
+        self.n += 1
         # If a collision occurred
         if agent.get_bumper_state():
+            print(type(self).__name__, "returned", ExecutionStatus.FAILURE)
             agent.set_velocity(0, 0)
             self.n = 0
             return ExecutionStatus.FAILURE
         # If no collision occurred but the movement is not finished
         elif 0 <= self.n < n2:
+            print(type(self).__name__, "returned", ExecutionStatus.RUNNING)
             return ExecutionStatus.RUNNING
         # If the roomba was able to execute the entire movement without colliding, return SUCCESS
         elif self.n >= n2:
+            print(type(self).__name__, "returned", ExecutionStatus.SUCCESS)
             self.n = 0
             self.status = NodeStatus.VISITED
             return ExecutionStatus.SUCCESS
@@ -384,25 +386,27 @@ class MoveInSpiralNode(LeafNode):
         if self.status != NodeStatus.VISITING:
             raise ValueError("Error! Node status is not VISITING.")
 
-        # Increment sampling cycles counter "n"
-        self.n += 1
-
         # Instantaneous curvature radius
         r = r0 + b * self.n * SAMPLE_TIME
         # Change velocity to move in spiral
         agent.set_velocity(FORWARD_SPEED, FORWARD_SPEED / r)
         # DUVIDA: call "check_transition()" ?
 
+        # Increment sampling cycles counter "n"
+        self.n += 1
         # If a collision occurred
         if agent.get_bumper_state():
+            print(type(self).__name__, "returned", ExecutionStatus.FAILURE)
             self.n = 0
             agent.set_velocity(0, 0)
             return ExecutionStatus.FAILURE
         # If no collision occurred but the movement is not finished
         elif 0 <= self.n < n1:
+            print(type(self).__name__, "returned", ExecutionStatus.RUNNING)
             return ExecutionStatus.RUNNING
         # If the roomba was able to execute the entire movement without colliding, return SUCCESS
         elif self.n >= n1:
+            print(type(self).__name__, "returned", ExecutionStatus.SUCCESS)
             self.n = 0
             self.status = NodeStatus.VISITED
             return ExecutionStatus.SUCCESS
@@ -443,24 +447,28 @@ class GoBackNode(LeafNode):
         if self.status != NodeStatus.VISITING:
             raise ValueError("Error! Node status is not VISITING.")
 
-        # Increment sampling cycles counter "n"
-        self.n += 1
+
 
         # Change velocity to move backwards
-        agent.set_velocity(-BACKWARD_SPEED, 0)
-        agent.set_bumper_state(False)
+        if int(self.n) == 0:
+            agent.set_velocity(BACKWARD_SPEED, 0)
+            agent.set_bumper_state(False)
         # DUVIDA: call "check_transition()" ?
 
+        # Increment sampling cycles counter "n"
+        self.n += 1
         # If a collision occurred
         if agent.get_bumper_state():
-            # self.n = 0
-            # return ExecutionStatus.FAILURE
-            raise RuntimeError("Error! Roomba collided while going back.")
+            print(type(self).__name__, "returned", ExecutionStatus.FAILURE)
+            self.n = 0
+            return ExecutionStatus.FAILURE
         # If no collision occurred but the movement is not finished
         elif 0 <= self.n < n3:
+            print(type(self).__name__, "returned", ExecutionStatus.RUNNING)
             return ExecutionStatus.RUNNING
         # If the roomba was able to execute the entire movement without colliding, return SUCCESS
         elif self.n >= n3:
+            print(type(self).__name__, "returned", ExecutionStatus.SUCCESS)
             self.n = 0
             self.status = NodeStatus.VISITED
             return ExecutionStatus.SUCCESS
@@ -472,8 +480,9 @@ class GoBackNode(LeafNode):
 
 
 class RotateNode(LeafNode):
-    def __init__(self, status = NodeStatus.NOT_VISITED, node_name = "rotate", parent = None, n = 0):
+    def __init__(self, status = NodeStatus.NOT_VISITED, node_name = "rotate", parent = None, n = 0, delta_rotation = math.pi * random.uniform(-1, 1)):
         super().__init__(status = status, node_name = node_name, parent = parent, n = n)
+        self.delta_rotation = delta_rotation
         # Todo: add initialization code
 
         # DEBUGGING: printing leaf node being executed
@@ -491,6 +500,11 @@ class RotateNode(LeafNode):
 
         # Set node status to VISITING
         self.status = NodeStatus.VISITING
+        # Choosing a new random value for "delta_rotation"
+        self.delta_rotation = math.pi * random.uniform(-1, 1)
+        # Make both roomba's velocities equal to zero
+        agent.set_velocity(0, 0)
+
 
 
     def execute(self, agent):
@@ -503,29 +517,48 @@ class RotateNode(LeafNode):
         if self.status != NodeStatus.VISITING:
             raise ValueError("Error! Node status is not VISITING.")
 
-        # Increment sampling cycles counter "n"
-        self.n += 1
-
-        # Make both roomba's velocities equal to zero
-        agent.set_velocity(0, 0)
         agent.set_bumper_state(False)
-        # Spin of a random angle in [-pi; pi) with uniform PDF
-        agent.pose.rotation += math.pi * random.uniform(-1, 1)
+
+        # DEBUGGING
+        print(type(self).__name__ + ": self.delta_rotation ==", self.delta_rotation)
+        # DEBUGGING
+        print(type(self).__name__ + ": agent.pose.rotation ==", agent.pose.rotation)
+        # DEBUGGING
+        print(type(self).__name__ + ": \"n\" ==", self.n)
+        # DEBUGGING
+        print(type(self).__name__ + ": number of sampling cycles to run to complete rotation ==",
+              math.ceil(math.fabs(self.delta_rotation / (ANGULAR_SPEED * SAMPLE_TIME))),
+        )
+
+        if self.delta_rotation >= 0:
+            # Spin in horary sense (positive w)
+            agent.set_velocity(0, ANGULAR_SPEED)
+        else:
+            # Spin in anti-horary sense (negative w)
+            agent.set_velocity(0, -ANGULAR_SPEED)
+
+
+
         # DUVIDA: call "check_transition()" ?
 
+
+        # Increment sampling cycles counter "n"
+        self.n += 1
         # If a collision occurred
         if agent.get_bumper_state():
             raise RuntimeError("Error! Roomba collided while rotating.")
         # If no collision occurred but the movement is not finished
-        elif 0 <= self.n < n3:
+        elif self.n < math.ceil(math.fabs(self.delta_rotation / (ANGULAR_SPEED * SAMPLE_TIME))):
+            # DEBUGGING
+            print(type(self).__name__, "returned", ExecutionStatus.RUNNING)
             return ExecutionStatus.RUNNING
         # If the roomba was able to execute the entire movement without colliding, return SUCCESS
-        elif self.n >= n3:
+        elif self.n >= math.ceil(math.fabs(self.delta_rotation / (ANGULAR_SPEED * SAMPLE_TIME))):
+            print(type(self).__name__, "returned", ExecutionStatus.SUCCESS)
             self.n = 0
             self.status = NodeStatus.VISITED
             return ExecutionStatus.SUCCESS
-        # If the counter "n" has an invalid value
         else:
-            raise ValueError("Error! Sampling cycles counter \"n\" is invalid.")
+            raise RuntimeError("Error! Did not enter in any of the conditions.")
 
 
