@@ -1,4 +1,4 @@
-from math import sin, cos, fabs
+from math import sin, cos, fabs, pi
 from constants import SAMPLE_TIME
 from state_machine import FiniteStateMachine
 
@@ -17,6 +17,21 @@ def clamp(value, min, max):
     elif value < min:
         return min
     return value
+
+def main_phase(theta):
+    """
+    If the phase does not belong to the interval [-pi, pi), converts it to an equivalent value inside such interval ("first positive determination").
+    :param theta: phase in radians.
+    :return: first positive determination.
+    """
+    if fabs(theta) >= pi:
+        while not -pi <= theta < pi:
+            if theta >= pi:
+                theta -= 2 * pi
+            else:
+                theta += 2 * pi
+
+    return theta
 
 
 class Roomba(object):
@@ -92,7 +107,10 @@ class Roomba(object):
         else:
             self.pose.position.x += (2.0 * v / w) * cos(self.pose.rotation + w * dt / 2.0) * sin(w * dt / 2.0)
             self.pose.position.y += (2.0 * v / w) * sin(self.pose.rotation + w * dt / 2.0) * sin(w * dt / 2.0)
-        self.pose.rotation += w * dt
+
+        # Clamping angle to the interval [-pi, pi)
+        self.pose.rotation = main_phase(self.pose.rotation + w * dt)
+
 
     def update(self):
         """
