@@ -22,6 +22,7 @@ def main_phase(theta):
     """
     If the phase does not belong to the interval [-pi, pi), converts it to an equivalent value inside such interval ("first positive determination").
     :param theta: phase in radians.
+    :type theta: float
     :return: first positive determination.
     """
     if fabs(theta) >= pi:

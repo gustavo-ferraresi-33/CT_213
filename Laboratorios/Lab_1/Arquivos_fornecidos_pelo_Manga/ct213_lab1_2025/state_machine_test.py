@@ -2,7 +2,7 @@ from utils import Pose
 from constants import FREQUENCY
 from roomba import Roomba
 from simulation import *
-from state_machine import FiniteStateMachine, StateName
+from state_machine import FiniteStateMachine, MoveForwardState
 
 pygame.init()
 
@@ -12,8 +12,7 @@ pygame.display.set_caption("Lab 1 - Roomba Finite State Machine")
 
 clock = pygame.time.Clock()
 
-behavior = FiniteStateMachine(StateName.MOVE_FORWARD)
-# DUVIDA: why "behavior" should receive a behavior tree, which the implementation we are focused at (DSFM) does not depend on ?
+behavior = FiniteStateMachine(MoveForwardState())
 # behavior = RoombaBehaviorTree()
 pose = Pose(PIX2M * SCREEN_WIDTH / 2.0, PIX2M * SCREEN_HEIGHT / 2.0, 0.0)
 roomba = Roomba(pose, 1.0, 2.0, 0.34 / 2.0, behavior)

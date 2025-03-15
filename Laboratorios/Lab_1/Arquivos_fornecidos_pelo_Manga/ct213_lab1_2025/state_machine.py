@@ -2,28 +2,15 @@ import random
 import math
 from constants import *
 
-from enum import Enum
-# from AUX_roomba import Roomba
-
-class StateName(Enum):
-    """
-    Represents the state of the DFSM (Deterministic Finite State Machine)
-    """
-    MOVE_FORWARD = 0
-    MOVE_IN_SPIRAL = 1
-    GO_BACK = 2
-    ROTATE = 3
 
 class FiniteStateMachine(object):
     """
     A finite state machine.
     """
-    def __init__(self, state_name):
-        new_state = State(state_name = state_name)
-        self.state = new_state
+    def __init__(self, state):
+        self.state = state
 
-    def change_state(self, new_state_name):
-        new_state = State(new_state_name)
+    def change_state(self, new_state):
         self.state = new_state
 
     def update(self, agent):
@@ -35,15 +22,13 @@ class State(object):
     """
     Abstract state class.
     """
-    def __init__(self, n: int = 0, *, state_name):
+    def __init__(self, state_name):
         """
         Creates a state.
 
         :param state_name: the name of the state.
-        :type state_name
+        :type state_name: str
         """
-        # Initialize sampling cycles counter "n"
-        self.n = n
         self.state_name = state_name
 
     def check_transition(self, agent, fsm):
@@ -66,97 +51,55 @@ class State(object):
 
 class MoveForwardState(State):
     def __init__(self):
-        super().__init__(state_name = StateName.MOVE_FORWARD)
-        # TODO: add initialization code
-        # Set sampling cycles counter "n" to "0"
-        self.n = 0
+        super().__init__("MoveForward")
+        # Todo: add initialization code
 
-    def check_transition(self, agent, fsm):
-        # TODO: add logic to check and execute state transition
-        # If a collision is detected
-        if agent.get_bumper_state():
-            # Go to the state GoBackState
-            fsm.change_state(StateName.GO_BACK)
-        # If the maximum number of sampling cycles n2 is surpassed
-        elif self.n >= n2:
-            # Go to the state MoveInSpiral
-            fsm.change_state(StateName.MOVE_IN_SPIRAL)
+    def check_transition(self, agent, state_machine):
+        # Todo: add logic to check and execute state transition
+        pass
 
     def execute(self, agent):
-        # TODO: add execution logic
-        # Increment sampling cycles counter "n"
-        self.n += 1
-        # Change velocity to move forwards
-        agent.set_velocity(FORWARD_SPEED, 0)
+        # Todo: add execution logic
+        pass
+
 
 class MoveInSpiralState(State):
     def __init__(self):
-        # TODO: add initialization code
-        super().__init__(state_name = StateName.MOVE_IN_SPIRAL)
-        # Set sampling cycles counter "n" to "0"
-        self.n = 0
-
-    def check_transition(self, agent, fsm):
-        # TODO: add logic to check and execute state transition
-        # If a collision is detected
-        if agent.get_bumper_state():
-            # Go to the state GoBackState
-            fsm.change_state(StateName.GO_BACK)
-        # If the maximum number of sampling cycles n1 is surpassed
-        elif self.n >= n1:
-            # Go to the state MoveInSpiral
-            fsm.change_state(StateName.MOVE_IN_SPIRAL)
+        super().__init__("MoveInSpiral")
+        # Todo: add initialization code
+    
+    def check_transition(self, agent, state_machine):
+        # Todo: add logic to check and execute state transition
+        pass
 
     def execute(self, agent):
-        # TODO: add execution logic
-        # Increment sampling cycles counter "n"
-        self.n += 1
-        # Instantaneous curvature radius
-        r = r0 + b * self.n * SAMPLE_TIME
-        # Change velocity to move in spiral
-        agent.set_velocity(FORWARD_SPEED, FORWARD_SPEED/r)
-
+        # Todo: add execution logic
+        pass
 
 
 class GoBackState(State):
     def __init__(self):
-        # TODO: add initialization code
-        super().__init__(state_name = StateName.GO_BACK)
-        # Set sampling cycles counter "n" to "0"
-        self.n = 0
+        super().__init__("GoBack")
+        # Todo: add initialization code
 
-    def check_transition(self, agent, fsm):
-        # TODO: add logic to check and execute state transition
-        # If the maximum number of sampling cycles n3 is surpassed
-        if self.n >= n3:
-            # Go to the state MoveInSpiral
-            fsm.change_state(StateName.ROTATE)
-        
+    def check_transition(self, agent, state_machine):
+        # Todo: add logic to check and execute state transition
+        pass
+
     def execute(self, agent):
-        # TODO: add execution logic
-        # Increment sampling cycles counter "n"
-        self.n += 1
-        # Change velocity to move backwards
-        agent.set_velocity(-BACKWARD_SPEED, 0)
-        # DUVIDA: call "check_transition()" ?
+        # Todo: add execution logic
+        pass
 
 
 class RotateState(State):
     def __init__(self):
-        # TODO: add initialization code
-        super().__init__(state_name = StateName.ROTATE)
-        # Set sampling cycles counter "n" to "0"
-        self.n = 0
+        super().__init__("Rotate")
+        # Todo: add initialization code
 
-    def check_transition(self, agent, fsm):
-        # TODO: add logic to check and execute state transition
-        # Go to the state MoveForward
-        fsm.change_state(StateName.MOVE_FORWARD)
+    def check_transition(self, agent, state_machine):
+        # Todo: add logic to check and execute state transition
+        pass
     
     def execute(self, agent):
-        # TODO: add execution logic
-        # Increment sampling cycles counter "n"
-        self.n += 1
-        # Spin of a random angle in [-pi; pi) with uniform PDF
-        agent.pose.rotation += math.pi * random.uniform(-1, 1)
-
+        # Todo: add execution logic
+        pass

@@ -1,9 +1,11 @@
 from enum import Enum
+
 from constants import *
 import random
 import math
 
 import inspect
+from Arquivos_fornecidos_pelo_Manga.ct213_lab1_2025.roomba import main_phase
 
 class NodeStatus(Enum):
     """
@@ -482,8 +484,8 @@ class GoBackNode(LeafNode):
 class RotateNode(LeafNode):
     def __init__(self, status = NodeStatus.NOT_VISITED, node_name = "rotate", parent = None, n = 0, delta_rotation = math.pi * random.uniform(-1, 1)):
         super().__init__(status = status, node_name = node_name, parent = parent, n = n)
-        self.delta_rotation = delta_rotation
         # Todo: add initialization code
+        self.delta_rotation = main_phase(delta_rotation)
 
         # DEBUGGING: printing leaf node being executed
         print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
