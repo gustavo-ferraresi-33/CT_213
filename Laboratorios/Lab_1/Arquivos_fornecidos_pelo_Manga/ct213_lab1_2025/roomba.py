@@ -1,6 +1,5 @@
 from math import sin, cos, fabs, pi
 from constants import SAMPLE_TIME
-from state_machine import FiniteStateMachine
 
 
 def clamp(value, min, max):
