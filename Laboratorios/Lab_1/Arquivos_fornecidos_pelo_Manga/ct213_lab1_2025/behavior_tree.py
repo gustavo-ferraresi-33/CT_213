@@ -459,24 +459,26 @@ class GoBackNode(LeafNode):
 
         # Increment sampling cycles counter "n"
         self.n += 1
-        # If a collision occurred
-        if agent.get_bumper_state():
-            print(type(self).__name__, "returned", ExecutionStatus.FAILURE)
-            self.n = 0
-            return ExecutionStatus.FAILURE
-        # If no collision occurred but the movement is not finished
-        elif 0 <= self.n < n3:
-            print(type(self).__name__, "returned", ExecutionStatus.RUNNING)
-            return ExecutionStatus.RUNNING
-        # If the roomba was able to execute the entire movement without colliding, return SUCCESS
-        elif self.n >= n3:
+        # If the roomba was able to execute the entire movement or if a collision happened, return SUCCESS
+        #
+        # *************************************************************************************************
+        # * OBS: the reason for we to return SUCCESS even if a collision happened is that, if the roomba  *
+        # * collides while going back, the next leaf node executed is "RotateNode", which saves the       *
+        # * robot from becoming trapped in an endless loop of executing only the leaf nodes               *
+        # * "MoveForwardNode" and "GoBackNode"                                                            *
+        # *************************************************************************************************
+        if agent.get_bumper_state() or self.n >= n3:
             print(type(self).__name__, "returned", ExecutionStatus.SUCCESS)
             self.n = 0
             self.status = NodeStatus.VISITED
             return ExecutionStatus.SUCCESS
-        # If the counter "n" has an invalid value
+        # If no collision occurred but the movement is not finished
+        elif 0 <= self.n < n3:
+            print(type(self).__name__, "returned", ExecutionStatus.RUNNING)
+            return ExecutionStatus.RUNNING
+        # If none of the above options is entered
         else:
-            raise ValueError("Error! Sampling cycles counter \"n\" is invalid.")
+            raise ValueError("Error! Did not enter in any of the options.")
 
 
 
@@ -532,11 +534,13 @@ class RotateNode(LeafNode):
               math.ceil(math.fabs(self.delta_rotation / (ANGULAR_SPEED * SAMPLE_TIME))),
         )
 
+        # Changing the roomba's velocity to make it rotate, in the shortest amount of time, to the
+        # desired value of "agent.pose.inclination"
         if self.delta_rotation >= 0:
-            # Spin in horary sense (positive w)
+            # Spin in clockwise sense (positive w)
             agent.set_velocity(0, ANGULAR_SPEED)
         else:
-            # Spin in anti-horary sense (negative w)
+            # Spin in counterclockwise sense (negative w)
             agent.set_velocity(0, -ANGULAR_SPEED)
 
 
