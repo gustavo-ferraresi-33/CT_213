@@ -1,0 +1,121 @@
+\documentclass[brazil, 12pt]{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvips]{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[scale=0.8]{geometry} % Reduce document margins
+\usepackage{minted}    
+\usepackage{fancyvrb,newverbs,xcolor}
+\usepackage{titlesec}
+\usepackage{multirow}
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+% \usepackage{hyperref}
+
+\begin{document}
+
+%-----------------------------------------------------------------------------------------------
+%       CABEÇALHO
+%-----------------------------------------------------------------------------------------------
+\begin{center}
+\textbf{Instituto Tecnológico de Aeronáutica - ITA} \\
+\textbf{Inteligência Artificial para Robótica Móvel - CT213} \\
+\textbf{Aluno}:     % ESCREVA SEU NOME AQUI
+\end{center}
+
+\begin{center}
+\textbf{Relatório do Laboratório 2 - Busca Informada}
+\end{center}
+%-----------------------------------------------------------------------------------------------
+\vspace*{0.5cm}
+
+%-----------------------------------------------------------------------------------------------
+%       RELATÓRIO
+%-----------------------------------------------------------------------------------------------
+\section{Breve Explicação em Alto Nível da Implementação}
+
+\subsection{Algoritmo Dijkstra}
+%% Sugestão: cerca de meia página.
+
+\subsection{Algoritmo \emph{Greedy Search}}
+%% Sugestão: cerca de meia página.
+
+\subsection{Algoritmo A$^{\star}$}
+%% Sugestão: cerca de meia página.
+
+
+
+\section{Figuras Comprovando Funcionamento do Código}
+
+\subsection{Algoritmo Dijkstra}
+%% Basta colocar as figuras
+
+\subsection{Algoritmo \emph{Greedy Search}}
+%% Basta colocar as figuras
+
+\subsection{Algoritmo A$^{\star}$}
+%% Basta colocar as figuras
+
+
+
+\section{Comparação entre os Algoritmos}
+%% Basta preencher a tabela
+
+Tabela~\ref{tab:comp} com a comparação do tempo computacional, em segundos, e do custo do caminho entre os algoritmos usando um Monte Carlo com 100 iterações.
+
+\begin{table}[H]
+\centering
+\caption{tabela de comparação entre os algoritmos de planejamento de caminho.}
+\label{tab:comp}
+\begin{tabular}{|l|ll|ll|}
+\hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Algoritmo}}} & \multicolumn{2}{c|}{\textbf{Tempo computacional (s)}}                             & \multicolumn{2}{c|}{\textbf{Custo do caminho}}                                    \\ \cline{2-5} 
+\multicolumn{1}{|c|}{}                                    & \multicolumn{1}{c|}{\textbf{Média}} & \multicolumn{1}{c|}{\textbf{Desvio padrão}} & \multicolumn{1}{c|}{\textbf{Média}} & \multicolumn{1}{c|}{\textbf{Desvio padrão}} \\ \hline
+
+Dijkstra                & \multicolumn{1}{l|}{0.0}      & 0.0   & \multicolumn{1}{l|}{0.0}      & 0.0   \\ \hline
+\textit{Greedy Search}  & \multicolumn{1}{l|}{0.0}      & 0.0   & \multicolumn{1}{l|}{0.0}      & 0.0   \\ \hline
+A$^{\star}$             & \multicolumn{1}{l|}{0.0}      & 0.0   & \multicolumn{1}{l|}{0.0}      & 0.0   \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}
+
+
+%-----------------------------------------------------------------------------------------------
+%       SUGESTÃO PARA ADICIONAR A FIGURA
+%-----------------------------------------------------------------------------------------------
+%
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.7\textwidth]{teste.png} % caminho até a figura "teste.png"
+% \caption{escreva aqui a legenda da figura} % legenda da figura
+% \label{<label da figura>}  % label da figura. ex: \label{fig:test}
+% \end{figure}  
+
+
+%-----------------------------------------------------------------------------------------------
+%       REFERENCIAR FIGURA NO TEXTO
+%-----------------------------------------------------------------------------------------------
+% \ref{<label da figura>}       
+%
+% Por ex: na Figura \ref{fig:test}, observa-se que...
+
+
+%-----------------------------------------------------------------------------------------------
+%       COPIAR LINHAS DE CÓDIGO EM TEXTO
+%-----------------------------------------------------------------------------------------------
+%
+% \begin{minted}{python}
+%     def print_hello_world():
+%         '''
+%         This function prints "Hello World!"
+%         '''
+%         print("Hello World!")
+        
+%     print_hello_world()
+% \end{minted}
+%
+%-----------------------------------------------------------------------------------------------
