@@ -6,5 +6,8 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+<<<<<<< HEAD
+=======
 # Python cached files
 *.pyc
+>>>>>>> DFSM_1st_try
