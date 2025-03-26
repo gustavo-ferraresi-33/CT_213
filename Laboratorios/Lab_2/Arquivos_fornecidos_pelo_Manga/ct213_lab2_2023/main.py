@@ -77,6 +77,7 @@ cost_map = CostMap(WIDTH, HEIGHT)
 # Please, do not change the seed
 random.seed(15)
 # Create a random map
+# DUVIDA: a seguinte linha cria "NUM_OBSTACLES" obstaculos com altura "OBSTACLE_HEIGHT" e com largura "OBSTACLE_WIDTH"
 cost_map.create_random_map(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, NUM_OBSTACLES)
 # Create the path planner using the cost map
 path_planner = PathPlanner(cost_map)

@@ -2,7 +2,6 @@ import numpy as np
 import random
 from math import inf, sqrt
 
-
 class CostMap(object):
     """
     Represents a cost map where higher values indicates terrain which are harder to transverse.
@@ -18,7 +17,16 @@ class CostMap(object):
         """
         self.width = width
         self.height = height
-        self.grid = np.ones((height, width))
+
+        # BUG: the values were initialized as "1", but, now, they are initialized as "math.inf"
+        # DUVIDA: "self.grid[i, j]" contem o custo para se sair do vertice de inicio e chegar ao vertice de posicao "(i, j)", certo?
+        # DUVIDA: estah certo inicializar "self.grid[i, j]" com o valor 1.0
+        self.grid = np.empty((height, width))
+        for i in range(self.height):
+            for j in range(self.width):
+                if self.is_index_valid(i, j):
+                    self.grid[i, j] = 1
+
 
     def get_cell_cost(self, i, j):
         """
@@ -38,15 +46,24 @@ class CostMap(object):
         Obtains the cost of an edge.
 
         :param start: tbe cell where the edge starts.
-        :type start: float.
+        :type start: tuple of int.
         :param end: the cell where the edge ends.
-        :type end: float.
+        :type end: tuple of int.
         :return: cost of the edge.
         :rtype: float.
         """
+        if not abs(start[0] - end[0]) <= 1 or not abs(start[1] - end[1]) <= 1:
+            raise ValueError("Error! Edge's start and end must have their coordinates differing by no more than 1 .")
         diagonal = (start[0] != end[0]) and (start[1] != end[1])
         factor = sqrt(2) if diagonal else 1.0
+        # DUVIDA: por que o calculo do custo de cada aresta eh feito com a media dos custos das celulas de partida e de chegada? O custo nao deveria ser simplesmenteo o "factor" ?
+        # RESPOSTA:
+        # - Isso é uma carteacao
+        # - A funcao dessa carteacao eh fazer com que os vertices proximos a obstaculos tenham um custo maior
+        # - Isso estah certo, por incrivel que pareca
         return factor * (self.get_cell_cost(start[0], start[1]) + self.get_cell_cost(end[0], end[1])) / 2.0
+
+
 
     def is_occupied(self, i, j):
         """
@@ -59,7 +76,12 @@ class CostMap(object):
         :return: True if the cell is occupied, False otherwise.
         :rtype: bool.
         """
-        return self.grid[i][j] < 0.0
+        # DUVIDA: por que o criterio para saber se uma celula estar ocupada eh
+        # return self.grid[i][j] < 0.0
+        # RESPOSTA: porque, de acordo com a convencao do Manga
+        #   -> custo valendo "1" significa "existente e livre"
+        #   -> custo valendo "1" significa "existente e ocupado"
+        return self.grid[i, j] < 0.0
 
     def is_index_valid(self, i, j):
         """
@@ -93,15 +115,18 @@ class CostMap(object):
         :param rectangle: a rectangle defined as (x, y, width, height), where (x, y) is the top left corner.
         :type rectangle: 4-dimensional tuple.
         """
+        # BUG:
+        # DUVIDA: a implementacao do metodo "add_obstacle()" estah correta?
         self.add_rectangle((rectangle[0] - 1, rectangle[1] - 1, rectangle[2] + 2, rectangle[3] + 2), 2.0)
         self.add_rectangle(rectangle, -1.0)
 
-    def add_rectangle(self, rectangle, value):
+    def add_rectangle(self, rectangle, value = -1):
         """
         Changes the values of a rectangular region to a given value.
 
         :param rectangle: rectangular region defined as (x, y, width, height), where (x, y) is the top left corner.
         :param value: the value used in the rectangular region.
+        # DUVIDA: o que significa o parametro "value" ?
         """
         left = rectangle[0]
         right = rectangle[0] + rectangle[2]
@@ -136,6 +161,7 @@ class NodeGrid(object):
         Creates a grid of graph nodes.
 
         :param cost_map: cost map used for planning.
+        # DUVIDA: o elemento "cost_map[i, j]"
         :type cost_map: CostMap.
         """
         self.cost_map = cost_map
@@ -202,8 +228,13 @@ class Node(object):
         """
         self.i = i
         self.j = j
+        # DUVIDA: o atributo "f" é o valor do custo total (custo do vertice + heuristica) ?
         self.f = inf
+        # DUVIDA: o atributo "g" é o custo do vertice ?
         self.g = inf
+        # DUVIDA: entao: "f = g + h", em que "g" é o custo do vertice e "h" é a heuristica do ate o noh objetivo
+
+        # DUVIDA: o atributo "closed"eh uma booleana que vale "True" se o noh jah foi descoberto e visitado (isto eh: explorado) ?
         self.closed = False
         self.parent = None
 
@@ -216,6 +247,7 @@ class Node(object):
         """
         return self.i, self.j
 
+    # DUVIDA: este metodo nao deveria ser "set_cost()"?
     def set_position(self, i, j):
         """
         Sets the position of this node.
@@ -251,9 +283,14 @@ class Node(object):
         return sqrt((self.i - i) ** 2 + (self.j - j) ** 2)
 
     def __lt__(self, another_node):
+        # DUVIDA: para que serve esta funcao? Nao vejo utilidade para ela que nao seja para construir um retangulo
+        # RESPOSTA: significa "less than". Deixar como estah
         if self.i < another_node.i:
             return True
         if self.j < another_node.j:
             return True
         return False
 
+# Regras para fazer os labs direito:
+# - Fazer com que o codigo que eu escrevo independa do resto do codigo
+# - Nao criar e nem eliminar classes, metodos de classes, nem atributos
