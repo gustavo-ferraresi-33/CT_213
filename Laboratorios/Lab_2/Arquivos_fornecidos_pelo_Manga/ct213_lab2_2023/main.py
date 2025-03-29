@@ -12,8 +12,8 @@ algorithm = 'dijkstra'
 # algorithm = 'a_star'
 
 # Number of path plannings used in the Monte Carlo analysis
-num_iterations = 1
-# num_iterations = 10
+# num_iterations = 1
+num_iterations = 10
 # num_iterations = 100  # Monte Carlo
 
 # Plot options
@@ -53,8 +53,10 @@ def plot_path(cost_map, start, goal, path, filename, save_fig=True, show_fig=Tru
         plt.title('Dijkstra')
     elif 'greedy' in filename:
         plt.title('Greedy Best-First')
-    else:
+    elif 'A*' in filename:
         plt.title('A*')
+    else:
+        raise NameError('Error! Unknown planning algorithm.')
 
     if save_fig:
         plt.savefig('%s.%s' % (filename, fig_format), format=fig_format)
@@ -112,6 +114,8 @@ for i in range(num_iterations):
     toc = time.time()
     times[i] = toc - tic
     costs[i] = cost
+    print(len(path))
+    print(r'{0}-th optimal-path cost: {1}'.format(i, costs[i]))
     plot_path(cost_map, start_position, goal_position, path, '%s_%d' % (algorithm, i), save_fig, show_fig, fig_format)
 
 

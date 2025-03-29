@@ -2,6 +2,10 @@ import numpy as np
 import random
 from math import inf, sqrt
 
+# DEBUGGING
+import inspect
+
+
 class CostMap(object):
     """
     Represents a cost map where higher values indicates terrain which are harder to transverse.
@@ -15,6 +19,10 @@ class CostMap(object):
         :param height: height (number of rows) of the cost map.
         :type height: int.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         self.width = width
         self.height = height
 
@@ -39,6 +47,10 @@ class CostMap(object):
         :return: cost of the cell.
         :rtype: float.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         return self.grid[i, j]
 
     def get_edge_cost(self, start, end):
@@ -52,6 +64,10 @@ class CostMap(object):
         :return: cost of the edge.
         :rtype: float.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         if not abs(start[0] - end[0]) <= 1 or not abs(start[1] - end[1]) <= 1:
             raise ValueError("Error! Edge's start and end must have their coordinates differing by no more than 1 .")
         diagonal = (start[0] != end[0]) and (start[1] != end[1])
@@ -81,6 +97,10 @@ class CostMap(object):
         # RESPOSTA: porque, de acordo com a convencao do Manga
         #   -> custo valendo "1" significa "existente e livre"
         #   -> custo valendo "1" significa "existente e ocupado"
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         return self.grid[i, j] < 0.0
 
     def is_index_valid(self, i, j):
@@ -94,6 +114,10 @@ class CostMap(object):
         :return: if the index is valid.
         :rtype: bool.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         return 0 <= i < self.height and 0 <= j < self.width
 
     def add_random_obstacle(self, width, height):
@@ -105,6 +129,10 @@ class CostMap(object):
         :param height: height (number of rows) of the obstacle.
         :type height: int.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         top_left = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
         self.add_obstacle((top_left[0], top_left[1], width, height))
 
@@ -115,12 +143,16 @@ class CostMap(object):
         :param rectangle: a rectangle defined as (x, y, width, height), where (x, y) is the top left corner.
         :type rectangle: 4-dimensional tuple.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         # BUG:
         # DUVIDA: a implementacao do metodo "add_obstacle()" estah correta?
         self.add_rectangle((rectangle[0] - 1, rectangle[1] - 1, rectangle[2] + 2, rectangle[3] + 2), 2.0)
         self.add_rectangle(rectangle, -1.0)
 
-    def add_rectangle(self, rectangle, value = -1):
+    def add_rectangle(self, rectangle, value = -1.0):
         """
         Changes the values of a rectangular region to a given value.
 
@@ -128,6 +160,10 @@ class CostMap(object):
         :param value: the value used in the rectangular region.
         # DUVIDA: o que significa o parametro "value" ?
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         left = rectangle[0]
         right = rectangle[0] + rectangle[2]
         top = rectangle[1]
@@ -148,6 +184,10 @@ class CostMap(object):
         :param num_obstacles: number of obstacles.
         :type num_obstacles: int.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         for i in range(num_obstacles):
             self.add_random_obstacle(obstacle_width, obstacle_height)
 
@@ -164,6 +204,10 @@ class NodeGrid(object):
         # DUVIDA: o elemento "cost_map[i, j]"
         :type cost_map: CostMap.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         self.cost_map = cost_map
         self.width = cost_map.width
         self.height = cost_map.height
@@ -172,10 +216,15 @@ class NodeGrid(object):
             for j in range(np.size(self.grid, 1)):
                 self.grid[i, j] = Node(i, j)
 
+
     def reset(self):
         """
         Resets all nodes of the grid.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         for row in self.grid:
             for node in row:
                 node.reset()
@@ -191,6 +240,10 @@ class NodeGrid(object):
         :return: node at row i and column j.
         :rtype: Node.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         return self.grid[i, j]
 
     def get_successors(self, i, j):
@@ -204,6 +257,10 @@ class NodeGrid(object):
         :return: list of the 8-connected successors.
         :rtype: list of Node.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         successors = []
         for di in range(-1, 2):
             for dj in range(-1, 2):
@@ -226,17 +283,27 @@ class Node(object):
         :param j: column of the node in the occupancy grid.
         :type j: int.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         self.i = i
         self.j = j
-        # DUVIDA: o atributo "f" é o valor do custo total (custo do vertice + heuristica) ?
+
+        # Initializing the total cost "f = g + h"
         self.f = inf
-        # DUVIDA: o atributo "g" é o custo do vertice ?
+        # Initializing the node cost "g"
         self.g = inf
+        # Initializing the heuristic cost "h"
+        self.h = inf
         # DUVIDA: entao: "f = g + h", em que "g" é o custo do vertice e "h" é a heuristica do ate o noh objetivo
 
         # DUVIDA: o atributo "closed"eh uma booleana que vale "True" se o noh jah foi descoberto e visitado (isto eh: explorado) ?
         self.closed = False
         self.parent = None
+
+        # Optimal-path finding algorithm to be used
+        self.bpf = None
 
     def get_position(self):
         """
@@ -245,6 +312,10 @@ class Node(object):
         :return: (i, j) where i is the row and the column of the node, respectively.
         :rtype: 2-dimensional tuple of int.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         return self.i, self.j
 
     # DUVIDA: este metodo nao deveria ser "set_cost()"?
@@ -257,6 +328,10 @@ class Node(object):
         :param j: column of the node in the occupancy grid.
         :type j: int.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         self.i = i
         self.j = j
 
@@ -264,8 +339,13 @@ class Node(object):
         """
         Resets the node to prepare it for a new path planning.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         self.f = inf
         self.g = inf
+        self.h = inf
         self.closed = False
         self.parent = None
 
@@ -280,16 +360,87 @@ class Node(object):
         :return: distance from this node to (i, j).
         :rtype: float.
         """
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
         return sqrt((self.i - i) ** 2 + (self.j - j) ** 2)
 
+
+    # VERSAO ORIGINAL DO MANGA
+    #
+    # def __lt__(self, another_node):
+    #
+    #     # DEBUGGING:
+    #     print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+    #
+    #     # DUVIDA: para que serve esta funcao? Nao vejo utilidade para ela que nao seja para construir um retangulo
+    #     # RESPOSTA: significa "less than". Deixar como estah
+    #     if self.i < another_node.i:
+    #         return True
+    #     if self.j < another_node.j:
+    #         return True
+    #     return False
+
+    # MINHA VERSAO
+    #
     def __lt__(self, another_node):
-        # DUVIDA: para que serve esta funcao? Nao vejo utilidade para ela que nao seja para construir um retangulo
-        # RESPOSTA: significa "less than". Deixar como estah
-        if self.i < another_node.i:
-            return True
-        if self.j < another_node.j:
-            return True
-        return False
+
+        # DEBUGGING:
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+
+
+        # Initial definitions
+        nan = float("nan")
+
+        # Checking which bpf will be used
+        match self.bpf:
+            case "dijkstra":
+                return self.g < another_node.g
+            case "greedy":
+                return self.h < another_node.h
+            case "a_star":
+                return self.f < another_node.f
+            case _:
+                raise ValueError("Error! Illegal bpf algorithm.")
+
+        # # Costs for the first node
+        # f1 = self.f
+        # g1 = self.g
+        # h1 = self.h
+        # # if not ((f1 == g1 == inf) or (f1 == nan) or (g1 == nan)):
+        # #     h1 = self.f - self.g
+        # # else:
+        # #     h1
+        #
+        # # Costs for the second node
+        # f2 = another_node.f
+        # g2 = another_node.g
+        # h2 = another_node.h
+        # # if not ((f2 == g2 == inf) or (f2 == nan) or (g2 == nan)):
+        # #     h2 = another_node.f - another_node.g
+        # # else:
+        # #     h2 = None
+        #
+        # if not ((inf in [f1, g1, h1, f2, g2, h2]) or (nan in [f1, g1, h1, f2, g2, h2])):
+        #     if f1 < f2 or g1 < g2 or h1 < h2:
+        #         return True
+        #     if f1 > f2 or g1 > g2 or h1 > h2:
+        #         return False
+        #     elif f1 == f2 and g1 == g2 and h1 == h2:
+        #         raise ValueError("Error! All costs (f, g and h) are equal.")
+        #     else:
+        #         raise ValueError("Error! None of the 3 conditions was entered.")
+        # else:
+        #
+        #     print("f1:", f1)
+        #     print("g1:", g1)
+        #     print("h1:", h1)
+        #     print("f2:", f2)
+        #     print("g2:", g2)
+        #     print("h2:", h2)
+        #
+        #     raise ValueError("Error! A node cost is still unitialized (inf).")
 
 # Regras para fazer os labs direito:
 # - Fazer com que o codigo que eu escrevo independa do resto do codigo
