@@ -6,25 +6,27 @@ from math import inf
 import random
 import time
 
+import json
+
 # Select planning algorithm
-# algorithm = 'dijkstra'
-# algorithm = 'greedy'
-algorithm = 'a_star'
+list_algo = ['dijkstra', 'greedy', 'a_star']
+algorithm = list_algo[2]
 
 # Number of path plannings used in the Monte Carlo analysis
 # num_iterations = 1
-num_iterations = 10
-# num_iterations = 100  # Monte Carlo
+# num_iterations = 5
+# num_iterations = 10
+num_iterations = 100  # Monte Carlo
 
 # Plot options
-save_fig = True  # if the figure will be used to the hard disk
-show_fig = True  # if the figure will be shown in the screen
+save_fig = False  # if the figure will be saved to the hard disk
+show_fig = False  # if the figure will be shown in the screen
 fig_format = 'png'
 # Recommended figure formats: .eps for Latex/Linux, .svg for MS Office, and .png for easy visualization in Windows.
 # The quality of .eps and .svg is far superior since these are vector graphics formats.
 
 
-def plot_path(cost_map, start, goal, path, filename, save_fig=True, show_fig=True, fig_format='png'):
+def plot_path(cost_map, start, goal, path, filename, opt_cost = None, exec_index: int = None, save_fig=True, show_fig=True, fig_format='png'):
     """
     Plots the path.
 
@@ -32,6 +34,8 @@ def plot_path(cost_map, start, goal, path, filename, save_fig=True, show_fig=Tru
     :param start: start position.
     :param goal: goal position.
     :param path: path obtained by the path planning algorithm.
+    :param opt_cost: cost of the optimal path obtained
+    :param exec_index: execution index of the path planning algorithm.
     :param filename: filename used for saving the plot figure.
     :param save_fig: if the figure will be saved to the hard disk.
     :param show_fig: if the figure will be shown in the screen.
@@ -49,12 +53,15 @@ def plot_path(cost_map, start, goal, path, filename, save_fig=True, show_fig=Tru
 
     plt.xlabel('x / j')
     plt.ylabel('y / i')
+
+    str_head = '-th execution of '
+    str_tail = '\n(optimal path cost: '
     if 'dijkstra' in filename:
-        plt.title('Dijkstra')
+        plt.title(str(exec_index) + str_head + 'Dijkstra' + str_tail + str(float(opt_cost)) + ')')
     elif 'greedy' in filename:
-        plt.title('Greedy Best-First')
+        plt.title(str(exec_index) + str_head + 'Greedy Best-First' + str_tail + str(float(opt_cost)) + ')')
     elif 'a_star' in filename:
-        plt.title('A*')
+        plt.title(str(exec_index) + str_head + 'A-star' + str_tail + str(float(opt_cost)) + ')')
     else:
         raise NameError('Error! Unknown planning algorithm.')
 
@@ -87,6 +94,7 @@ path_planner = PathPlanner(cost_map)
 # so we may compute mean and standard deviation statistics in the Monte Carlo analysis.
 times = np.zeros((num_iterations, 1))
 costs = np.zeros((num_iterations, 1))
+
 for i in range(num_iterations):
     problem_valid = False
     while not problem_valid:
@@ -104,22 +112,32 @@ for i in range(num_iterations):
         problem_valid = True
     tic = time.time()
     if algorithm == 'dijkstra':
-        path, cost = path_planner.dijkstra(start_position, goal_position)
+        path_dijkstra, cost_dijkstra = path_planner.dijkstra(start_position, goal_position)
+        path = path_dijkstra
+        cost = cost_dijkstra
     elif algorithm == 'greedy':
-        path, cost = path_planner.greedy(start_position, goal_position)
+        path_greedy, cost_greedy = path_planner.greedy(start_position, goal_position)
+        path = path_greedy
+        cost = cost_greedy
     else:
-        path, cost = path_planner.a_star(start_position, goal_position)
+        path_a_star, cost_a_star = path_planner.a_star(start_position, goal_position)
+        path = path_a_star
+        cost = cost_a_star
     # if path is not None and len(path) > 0:
     path_found = True
     toc = time.time()
     times[i] = toc - tic
     costs[i] = cost
-    print(len(path))
-    print(r'{0}-th optimal-path cost: {1}'.format(i+1, costs[i]))
-    plot_path(cost_map, start_position, goal_position, path, '%s_%d' % (algorithm, i), save_fig, show_fig, fig_format)
-
+    # print(len(path))
+    # print(r'{0}-th optimal-path cost: {1}'.format(i, costs[i]))
+    plot_path(cost_map, start_position, goal_position, path, '%s_%d' % (algorithm, i), costs[i], i, save_fig, show_fig, fig_format)
 
 # Print Monte Carlo statistics
+print("\n\n-------------- Monte Carlo Estimation --------------")
+print("Path planning algorithm:", algorithm, "\n")
+print("----------------------------------------------------")
 print(r'Compute time: mean: {0}, std: {1}'.format(np.mean(times), np.std(times)))
 if not (inf in costs):
     print(r'Cost: mean: {0}, std: {1}'.format(np.mean(costs), np.std(costs)))
+print("----------------------------------------------------")
+

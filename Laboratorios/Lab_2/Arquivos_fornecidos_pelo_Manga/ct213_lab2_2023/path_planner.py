@@ -20,7 +20,7 @@ class PathPlanner(object):
         """
 
         # DEBUGGING:
-        print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
 
         self.cost_map = cost_map
         self.node_grid = NodeGrid(cost_map)
@@ -66,11 +66,11 @@ class PathPlanner(object):
         # The second return is the cost of the path
 
         # DEBUGGING:
-        print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
 
         # DEBUGGING:
-        print("Starting vertex: ", start_position)
-        print("Goal vertex: ", goal_position)
+        # print("Starting vertex: ", start_position)
+        # print("Goal vertex: ", goal_position)
 
         self.node_grid.reset()
         path = []
@@ -107,7 +107,7 @@ class PathPlanner(object):
         while len(pq) > 0:
             # DEBUGGING
             iter_1 += 1
-            print("iter_1:", iter_1)
+            # print("iter_1:", iter_1)
 
 
             node_processing = pq_dequeue(pq)
@@ -162,11 +162,11 @@ class PathPlanner(object):
                             cost_node_pro + cost_edge_pro2suc
             # DEBUGGING
             # pq_dequeue(pq)
-            print("Priority queue size:", len(pq))
+            # print("Priority queue size:", len(pq))
 
 
         # DEBUGGING
-        print("Optimal path found!")
+        # print("Optimal path found!")
 
         # Calculating the optimal-path cost
         path_cost = self.node_grid.grid[goal_position[0], goal_position[1]].g
@@ -198,11 +198,11 @@ class PathPlanner(object):
         # The second return is the cost of the path
 
         # DEBUGGING:
-        print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
 
         # DEBUGGING:
-        print("Starting vertex: ", start_position)
-        print("Goal vertex: ", goal_position)
+        # print("Starting vertex: ", start_position)
+        # print("Goal vertex: ", goal_position)
 
         self.node_grid.reset()
         path = []
@@ -240,7 +240,7 @@ class PathPlanner(object):
         while len(pq) > 0:
             # DEBUGGING
             iter_1 += 1
-            print("iter_1:", iter_1)
+            # print("iter_1:", iter_1)
 
 
             node_processing = pq_dequeue(pq)
@@ -302,11 +302,11 @@ class PathPlanner(object):
                             cost_node_pro + cost_edge_pro2suc
             # DEBUGGING
             # pq_dequeue(pq)
-            print("Priority queue size:", len(pq))
+            # print("Priority queue size:", len(pq))
 
 
         # DEBUGGING
-        print("Optimal path found!")
+        # print("Optimal path found!")
 
         # Calculating the optimal-path cost
         path_cost = self.node_grid.grid[goal_position[0], goal_position[1]].g
@@ -341,11 +341,11 @@ class PathPlanner(object):
         path_cost = inf
 
         # DEBUGGING:
-        print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
+        # print(type(self).__name__ + "." + inspect.currentframe().f_code.co_name)
 
         # DEBUGGING:
-        print("Starting vertex: ", start_position)
-        print("Goal vertex: ", goal_position)
+        # print("Starting vertex: ", start_position)
+        # print("Goal vertex: ", goal_position)
 
         # Loading the bpf algorithm into each node and calculating the heuristic "h" for each node
         for row in self.node_grid.grid:
@@ -381,7 +381,7 @@ class PathPlanner(object):
         while len(pq) > 0:
             # DEBUGGING
             iter_1 += 1
-            print("iter_1:", iter_1)
+            # print("iter_1:", iter_1)
 
             node_processing = pq_dequeue(pq)
             # 2-tuple of "int" containing the position of the node currently being processed
@@ -389,17 +389,18 @@ class PathPlanner(object):
             # "float" containing the cost "g" of the node currently being processed
             cost_node_pro = self.node_grid.grid[position_processing[0],
                                                 position_processing[1]].g
+            heur_cost_node_pro = self.node_grid.grid[position_processing[0],
+                                                position_processing[1]].h
             # "float" containing the total cost "f = g + h" of the node currently being processed
-            tot_cost_node_pro = self.node_grid.grid[position_processing[0],
-                                                    position_processing[1]].h \
-                                + cost_node_pro
+            tot_cost_node_pro = cost_node_pro + heur_cost_node_pro
             # DEBUGGING
             # print("cost_node_pro:", cost_node_pro)
-            # Here, "successors" is a list of tuples, each tuple containing the position (2-tuple of int) of a successor of the node whose position is "start_position"
             successors = [self.node_grid.get_node(position[0], position[1]) \
                           for position in \
                           self.node_grid.get_successors(position_processing[0],
                                                         position_processing[1])]
+            successors.sort()
+            # successors.sort(key = lambda successor: successor.distance_to(position_processing[0], position_processing[1]))
 
             for node_successor in successors:
                 if not node_successor.closed:
@@ -416,10 +417,12 @@ class PathPlanner(object):
                     cost_node_suc = self.node_grid.grid[
                         position_successor[0],
                         position_successor[1]].g
-                    # "float" containing the total cost "f = g + h" of the successor node under analysis
-                    tot_cost_node_suc = self.node_grid.grid[
+                    # "float" containing the cost "g" of the successor node under analysis
+                    heur_cost_node_suc = self.node_grid.grid[
                         position_successor[0],
-                        position_successor[1]].g + cost_node_suc
+                        position_successor[1]].h
+                    # "float" containing the total cost "f = g + h" of the successor node under analysis
+                    tot_cost_node_suc = cost_node_suc + heur_cost_node_suc
                     # DEBUGGING
                     # print("cost_node_suc:", cost_node_suc)
                     # "float" containing the cost of the edge going from the node being processed to its successor node under analysis
@@ -449,24 +452,19 @@ class PathPlanner(object):
                         self.node_grid.grid[
                             position_successor[0],
                             position_successor[1]].f = \
-                            cost_node_pro + cost_edge_pro2suc
+                            cost_node_pro + cost_edge_pro2suc \
+                            # + heur_cost_node_suc
 
             # DEBUGGING
-            print("Priority queue size:", len(pq))
+            # print("Priority queue size:", len(pq))
 
         # DEBUGGING
-        print("Optimal path found!")
+        # print("Optimal path found!")
 
         # Calculating the optimal-path cost
         path_cost = self.node_grid.grid[
                         goal_position[0],
                         goal_position[1]].g
-
-        # Making the costs "f" and "h", because they are not used in Dijkstra
-        for row in self.node_grid.grid:
-            for node in row:
-                node.h = 0
-                node.f = node.g
 
         # Reconstructing the path from "start_position" to "goal_position"
         path = self.construct_path(
