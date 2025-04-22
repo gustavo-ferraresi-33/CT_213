@@ -1,0 +1,120 @@
+\documentclass[brazil, 12pt]{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvips]{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[scale=0.8]{geometry} % Reduce document margins
+\usepackage{minted}    
+\usepackage{fancyvrb,newverbs,xcolor}
+\usepackage{titlesec}
+\usepackage{multirow}
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+% \usepackage{hyperref}
+
+\begin{document}
+
+%-----------------------------------------------------------------------------------------------
+%       CABEÇALHO
+%-----------------------------------------------------------------------------------------------
+\begin{center}
+\textbf{Instituto Tecnológico de Aeronáutica - ITA} \\
+\textbf{Inteligência Artificial para Robótica Móvel - CT213} \\
+\textbf{Aluno}:     % ESCREVA SEU NOME AQUI
+\end{center}
+
+\begin{center}
+\textbf{Relatório do Laboratório 3 - Otimização com Métodos de Busca Local}
+\end{center}
+%-----------------------------------------------------------------------------------------------
+\vspace*{0.5cm}
+
+%-----------------------------------------------------------------------------------------------
+%       RELATÓRIO
+%-----------------------------------------------------------------------------------------------
+\section{Breve Explicação em Alto Nível da Implementação}
+
+\subsection{Descida do Gradiente}
+%% Sugestão: cerca de meia página.
+
+\subsection{\emph{Hill Climbing}}
+%% Sugestão: cerca de meia página.
+
+\subsection{\emph{Simulated Annealing}}
+%% Sugestão: cerca de meia página.
+
+
+
+\section{Figuras Comprovando Funcionamento do Código}
+
+\subsection{Descida do Gradiente}
+%% Basta colocar as figuras
+
+\subsection{\emph{Hill Climbing}}
+%% Basta colocar as figuras
+
+\subsection{\emph{Simulated Annealing}}
+%% Basta colocar as figuras
+
+
+
+\section{Comparação entre os métodos}
+%% Basta preencher a tabela e colocar as figuras da trajetória de otimização e das curvas da regressão linear.
+
+Tabela~\ref{tab:comp} com a comparação dos parâmetros da regressão linear obtidos pelos métodos de otimização.
+
+\begin{table}[H]
+\centering
+\caption{parâmetros da regressão linear obtidos pelos métodos de otimização.}
+\label{tab:comp}
+\begin{tabular}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Método}}       & \multicolumn{1}{c|}{\textbf{$v_0$}} & \multicolumn{1}{c|}{\textbf{$f$}} \\ \hline
+MMQ                         & 0.0       & 0.0       \\ \hline
+Descida do gradiente        & 0.0       & 0.0       \\ \hline
+\emph{Hill climbing}        & 0.0       & 0.0       \\ \hline
+\emph{Simulated annealing}  & 0.0       & 0.0       \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}
+
+
+%-----------------------------------------------------------------------------------------------
+%       SUGESTÃO PARA ADICIONAR A FIGURA
+%-----------------------------------------------------------------------------------------------
+%
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.7\textwidth]{teste.png} % caminho até a figura "teste.png"
+% \caption{escreva aqui a legenda da figura} % legenda da figura
+% \label{<label da figura>}  % label da figura. ex: \label{fig:test}
+% \end{figure}  
+
+
+%-----------------------------------------------------------------------------------------------
+%       REFERENCIAR FIGURA NO TEXTO
+%-----------------------------------------------------------------------------------------------
+% \ref{<label da figura>}       
+%
+% Por ex: na Figura \ref{fig:test}, observa-se que...
+
+
+%-----------------------------------------------------------------------------------------------
+%       COPIAR LINHAS DE CÓDIGO EM TEXTO
+%-----------------------------------------------------------------------------------------------
+%
+% \begin{minted}{python}
+%     def print_hello_world():
+%         '''
+%         This function prints "Hello World!"
+%         '''
+%         print("Hello World!")
+        
+%     print_hello_world()
+% \end{minted}
+%
+%-----------------------------------------------------------------------------------------------

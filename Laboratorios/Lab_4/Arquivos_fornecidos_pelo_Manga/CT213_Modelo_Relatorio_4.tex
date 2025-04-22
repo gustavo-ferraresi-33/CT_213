@@ -1,0 +1,100 @@
+\documentclass[brazil, 12pt]{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvips]{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tasks}
+\usepackage[scale=0.8]{geometry} % Reduce document margins
+\usepackage{minted}    
+\usepackage{fancyvrb,newverbs,xcolor}
+\usepackage{titlesec}
+\usepackage{multirow}
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+% \usepackage{hyperref}
+
+\begin{document}
+
+%-----------------------------------------------------------------------------------------------
+%       CABEÇALHO
+%-----------------------------------------------------------------------------------------------
+\begin{center}
+\textbf{Instituto Tecnológico de Aeronáutica - ITA} \\
+\textbf{Inteligência Artificial para Robótica Móvel - CT213} \\
+\textbf{Aluno}:     % ESCREVA SEU NOME AQUI
+\end{center}
+
+\begin{center}
+\textbf{Relatório do Laboratório 4 - Otimização com Métodos Baseados em População}
+\end{center}
+%-----------------------------------------------------------------------------------------------
+\vspace*{0.5cm}
+
+%-----------------------------------------------------------------------------------------------
+%       RELATÓRIO
+%-----------------------------------------------------------------------------------------------
+\section{Breve Explicação em Alto Nível da Implementação}
+
+\subsection{\emph{Particle Swarm Optimization}}
+Sugestão: cerca de uma página.
+
+
+\section{Figuras Comprovando Funcionamento do Código}
+
+\subsection{Teste do \emph{Particle Swarm Optimization}}
+Basta colocar as figuras
+
+\subsection{Otimização do controlador do robô seguidor de linha}
+Basta colocar as figuras
+
+\subsubsection{Histórico de Otimização}
+Basta colocar os gráficos que são plotados quando se aperta P
+
+\subsubsection{Melhor Trajetória Obtida Durante a Otimização}
+Basta colocar a figura salva quando se desativa o treinamento
+
+
+\section{Discussão sobre o observado durante o processo de otimização}
+Sugestão: cerca de um parágrafo.
+
+\end{document}
+
+
+%-----------------------------------------------------------------------------------------------
+%       SUGESTÃO PARA ADICIONAR A FIGURA
+%-----------------------------------------------------------------------------------------------
+%
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.7\textwidth]{teste.png} % caminho até a figura "teste.png"
+% \caption{escreva aqui a legenda da figura} % legenda da figura
+% \label{<label da figura>}  % label da figura. ex: \label{fig:test}
+% \end{figure}  
+
+
+%-----------------------------------------------------------------------------------------------
+%       REFERENCIAR FIGURA NO TEXTO
+%-----------------------------------------------------------------------------------------------
+% \ref{<label da figura>}       
+%
+% Por ex: na Figura \ref{fig:test}, observa-se que...
+
+
+%-----------------------------------------------------------------------------------------------
+%       COPIAR LINHAS DE CÓDIGO EM TEXTO
+%-----------------------------------------------------------------------------------------------
+%
+% \begin{minted}{python}
+%     def print_hello_world():
+%         '''
+%         This function prints "Hello World!"
+%         '''
+%         print("Hello World!")
+        
+%     print_hello_world()
+% \end{minted}
+%
+%-----------------------------------------------------------------------------------------------
